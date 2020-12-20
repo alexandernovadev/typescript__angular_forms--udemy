@@ -1,0 +1,141 @@
+<h4>Formularios <small>template</small></h4>
+<hr>
+<form (ngSubmit)="guardar(form)" #form="ngForm" novalidate>
+    <div>
+        <div class="form-group row">
+            <label class="col-2 col-form-label">Nombre</label>
+            <div class="col-8">
+
+                <input class="form-control"
+                [ngClass]="{'is-invalid':nombre.errors!=null && nombre.touched == true , 'is-valid':nombre.errors == null}"
+                type="text"
+                placeholder="Nombre"
+                name="nombre"
+                [(ngModel)]="usuario.nombre"
+                required 
+                minlength="3" 
+                #nombre="ngModel">
+
+                <!-- invalid-feedback es una clase de Boostarp para colocar rojo/danger en el input -->
+                <div class="invalid-feedback">
+                    <div *ngIf="nombre.errors?.required ">
+                        El campo es obligatorio
+                    </div>
+                    <div *ngIf="nombre.errors?.minlength" class="text-danger">
+                        La longitud mínima es de {{nombre.errors.minlength.requiredLength}} carácteres
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-2 col-form-label">Apellido</label>
+            <div class="col-8">
+
+                <input class="form-control" 
+                [ngClass]="{'is-invalid':apellido.errors!=null&& apellido.touched == true , 'is-valid':apellido.errors==null}"
+                type="text" placeholder="Apellido" name="apellido" [(ngModel)]="usuario.apellido"
+                required #apellido="ngModel">
+
+                <div *ngIf="apellido.errors?.required" class="invalid-feedback">
+                    El campo es obligatorio
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Correo</label>
+        <div class="col-md-8">
+
+            <input
+            class="form-control"
+            [ngClass]="{'is-invalid':correo.errors!=null && correo.touched == true , 'is-valid':correo.errors==null}"
+            type="email"
+            placeholder="Correo electrónico"
+            name="correo"
+            [(ngModel)]="usuario.correo"
+            required="required"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+            #correo="ngModel">
+
+            <div class="invalid-feedback">
+                <div *ngIf="correo.errors?.required">
+                    El campo es obligatorio
+                </div>
+                <div *ngIf="correo.errors?.pattern">
+                    El correo no tiene un formato válido
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">País</label>
+        <div class="col-md-8">
+            <select class="form-control" name="pais" [(ngModel)]="usuario.pais">
+                <option value="select">Seleccione un país</option>
+                <option *ngFor="let pais of paises" [value]="pais.codigo">{{pais.nombre}}</option>
+            </select>
+
+            <div *ngIf="correo.errors?.pattern">
+                El correo no tiene un formato válido
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="form-group row">
+      <!-- Han cambiado las librerias del video al angular Actual -->
+        <label class="col-2 col-form-label">Sexo</label>
+        <div class="col-md-8">
+            <div *ngFor="let sex of sexos; let i = index" class="custom-control custom-radio">
+                <input [(ngModel)]="usuario.sexo" 
+                      [value]="sex" 
+                      name="sexo" 
+                      type="radio" 
+                      class="custom-control-input"
+                      [id]="i">
+                <label class="custom-control-label" [for]="i" >
+                 {{sex}}
+                </label>
+            </div>
+            <!-- <label class="custom-control custom-radio">
+            <input [(ngModel)]="usuario.sexo" value="Mujer" name="sexo" type="radio" class="custom-control-input">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">Mujer</span>
+        </label> -->
+    </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-2 col-form-label">Acepta</label>
+    <div class="col-md-8">
+        <div class="custom-control custom-checkbox">
+            <input [(ngModel)]="usuario.acepta" 
+                   name="acepta" 
+                   type="checkbox" 
+                   id="condicionescheck"
+                   class="custom-control-input" 
+                   #acepta="ngModel"
+                   required>
+            <label class="custom-control-label" for="condicionescheck">Acepta las Condiciones</label>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">&nbsp;</label>
+        <div class="input-group col-md-8">
+            <!-- [disabled]="!formTemp.valid" -->
+            <button type="submit" class="btn btn-outline-primary">
+                Guardar
+            </button>
+        </div>
+    </div>
+</div>
+
+</form>
+
+<pre>
+    {{usuario | json}}
+</pre>

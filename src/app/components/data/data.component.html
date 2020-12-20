@@ -1,0 +1,96 @@
+<h4>Formularios <small>Data</small></h4>
+<hr>
+<!-- Para enlazar los datos hay que poner la variable FormGroup de .ts
+en este caso se llama forma -->
+<form [formGroup]="forma" (ngSubmit)="guradarCambios()" novalidate>
+
+  <!-- // Aqui habia un DIV que agrupada nombre y apellido WOUUUU -->
+  <div formGroupName="nombrecompleto">
+
+    <!-- otra manera de llamar los controls del forms, con .get () -->
+    <div class="form-group row" >
+      <label class="col-2 col-form-label">Nombre</label>
+      <div class="col-8">
+
+        <!-- Para enlazar datos de "forma": osea el form Nombre que tiene este Formulario
+        hay que escribir formControlName .. y el nombre de la varable que queremos mostrar -->
+
+        <!-- Aca hay que tener mucho cuidado con estas putas clases de Bootstrap -->
+
+        
+        <input class="form-control"
+               [ngClass]="{'is-valid': forma.get('nombrecompleto.nombre').valid ,
+               'is-invalid': forma.get('nombrecompleto.nombre').invalid}"
+               type="text"
+               formControlName="nombre"
+               placeholder="Nombre"/>
+            <div class="invalid-feedback" *ngIf="forma.get('nombrecompleto.nombre').errors?.required">
+                El campo Nombre es obligatorio
+            </div>
+            <div class="invalid-feedback" *ngIf="forma.get('nombrecompleto.nombre').errors?.minlength">
+                Por lo menos tres caracteres
+            </div>
+       
+      </div>
+
+    </div>
+
+    <div class="form-group row">
+      <label class="col-2 col-form-label">Apellido</label>
+      <div class="col-8">
+
+        <input class="form-control"
+               type="text"
+               formControlName="apellido"
+               placeholder="Apellido">
+      </div>
+    </div>
+
+  </div>
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Correo</label>
+    <div class="col-md-8">
+
+      <input class="form-control"
+             type="email"
+             formControlName="correo"
+             placeholder="Correo electrónico">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Pasatiempos</label>
+
+    <!-- AQUIIII, OJO como es un arreglo tengo que espicificar al div
+    que esto es un arreglo -->
+    <div class="col-md-8" formArrayName="pasatiempos">
+
+      <input class="form-control"
+             type="text"
+             *ngFor="let pasatiempo of forma.get('pasatiempos').value; let i = index"
+             [formControlName]="i"
+             placeholder="Correo electrónico">
+    </div>
+    <!-- Aqui los add but no see, because no he echo a NgFor para repeat los items   -->
+    <button class="btn btn-primary" type="button" (click)="addpasatiempo()">ADD</button>
+   
+  </div>
+
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">&nbsp;</label>
+    <div class="input-group col-md-8">
+      <button type="submit" class="btn btn-outline-primary">
+        Guardar
+      </button>
+    </div>
+  </div>
+
+  {{ forma.valid }}
+  <!-- Con solo escribir el nombre del FormGroup tengo todos los valores de validacion de Angular
+  MUY interesante!!!! -->
+
+</form>
+
+
